@@ -58,6 +58,7 @@ var doWork = function(batchSize,batchNo){
 	}
 };
 
+/*
 app.get('/count', function (req, res) {
 	var serviceBusService = azure.createServiceBusService(connectionString);
 	var qName = 'testqueue2';
@@ -75,6 +76,7 @@ app.get('/count', function (req, res) {
 	
    //res.send('started batch '+batchNo + "queued "+msgQueueId +" received " +msgReceived);
 })
+*/
 
 //app.get('/', function (req, res) {
 
@@ -128,8 +130,12 @@ app.get('/count', function (req, res) {
  //res.send("Started");
  
 //})
+console.log("Starting consumer");
 
+setInterval(start,3000);
+/*
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
   setInterval(start,3000);
 })
+*/
