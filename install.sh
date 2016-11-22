@@ -9,4 +9,4 @@ apt-get -y install npm
 npm install express
 npm install azure-sb
 
-#node sb-single.js
+node sb-single.js
