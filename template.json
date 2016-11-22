@@ -320,7 +320,7 @@ RawBlameHistory
                 "metricTrigger": {
                   "metricName": "MessageCount",
                   "metricNamespace": "",
-                  "metricResourceUri": "/subscriptions/2f1aceda-05c5-4e53-857c-b7b248868a29/resourceGroups/sbTest/providers/Microsoft.ServiceBus/namespaces/test806003586/queues/testqueue",
+                  "metricResourceUri": "/subscriptions/2f1aceda-05c5-4e53-857c-b7b248868a29/resourceGroups/sbTest/providers/Microsoft.ServiceBus/namespaces/test806003586/queues/testqueue2",
                   "timeGrain": "PT1M",
                   "statistic": "Average",
                   "timeWindow": "PT5M",
@@ -339,7 +339,7 @@ RawBlameHistory
                 "metricTrigger": {
                   "metricName": "MessageCount",
                   "metricNamespace": "",
-                  "metricResourceUri": "/subscriptions/2f1aceda-05c5-4e53-857c-b7b248868a29/resourceGroups/sbTest/providers/Microsoft.ServiceBus/namespaces/test806003586/queues/testqueue",
+                  "metricResourceUri": "/subscriptions/2f1aceda-05c5-4e53-857c-b7b248868a29/resourceGroups/sbTest/providers/Microsoft.ServiceBus/namespaces/test806003586/queues/testqueue2",
                   "timeGrain": "PT1M",
                   "statistic": "Average",
                   "timeWindow": "PT5M",

@@ -9,6 +9,6 @@ sudo apt-get -y install nodejs
 sudo apt-get -y install npm 
 sudo npm install express
 sudo npm install azure-sb
-sudo npm install forever
+sudo npm install forever -g
 sudo forever start sb-single.js
 #node sb-single.js
