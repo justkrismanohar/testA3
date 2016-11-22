@@ -1,12 +1,14 @@
 #!/bin/bash
 workserver_path=/srv/workserver
-mkdir $workserver_path
-#cp sb-single.js $workserver_path
+sudo mkdir $workserver_path
+sudo cp sb-single.js $workserver_path
 
 # install node 
-apt-get -y install nodejs 
-apt-get -y install npm 
-npm install express
-npm install azure-sb
-
-node sb-single.js
+sudo apt -y install nodejs-legacy
+sudo apt-get -y install nodejs 
+sudo apt-get -y install npm 
+sudo npm install express
+sudo npm install azure-sb
+sudo npm install forever
+sudo forever start sb-single.js
+#node sb-single.js
