@@ -130,12 +130,11 @@ app.get('/count', function (req, res) {
  //res.send("Started");
  
 //})
-console.log("Starting consumer");
+//console.log("Starting consumer");
 
-setInterval(start,3000);
-/*
+//setInterval(start,3000);
+
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
   setInterval(start,3000);
 })
-*/
