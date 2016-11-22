@@ -76,7 +76,7 @@ app.get('/count', function (req, res) {
    //res.send('started batch '+batchNo + "queued "+msgQueueId +" received " +msgReceived);
 })
 
-app.get('/', function (req, res) {
+//app.get('/', function (req, res) {
 
 	var runBatch = function(length){
 		  //console.log("queued "+msgQueueId +" received " +msgReceived);
@@ -124,11 +124,12 @@ app.get('/', function (req, res) {
 		  
 	 }; 
 
- setInterval(start,3000);
- res.send("Started");
+ //setInterval(start,3000);
+ //res.send("Started");
  
-})
+//})
 
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+  console.log('Example app listening on port 3000!');
+  setInterval(start,3000);
 })
