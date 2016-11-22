@@ -83,7 +83,7 @@ app.get('/count', function (req, res) {
 		  
 		  if(length > 0){
 			  var diff = msgQueueId - msgReceived ;
-			  var max = 10000 - diff;
+			  var max = 1000 - diff;
 			  
 			  batchNo++;
 			  if(length < max){
