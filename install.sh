@@ -4,8 +4,8 @@ mkdir $workserver_path
 #cp sb-single.js $workserver_path
 
 # install node 
-apt-get nodejs -y
-apt-get npm -y
+apt-get -y install nodejs 
+apt-get -y install npm 
 npm install express
 npm install azure-sb
 
