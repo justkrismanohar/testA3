@@ -2,7 +2,7 @@
 workserver_path=/srv/workserver
 sudo mkdir $workserver_path
 sudo cp sb-single.js $workserver_path
-
+sudo cd $workserver_path
 sudo apt-get update
 sudo apt-get -y install build-essential
 sudo apt-get -y install nodejs

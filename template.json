@@ -283,10 +283,10 @@ RawBlameHistory
                   "autoUpgradeMinorVersion": true,
                   "settings": {
                     "fileUris": [
-                      "https://raw.githubusercontent.com/justkrismanohar/testA3/master/install.sh",
+                      "https://raw.githubusercontent.com/justkrismanohar/testA3/master/installserver.sh",
                       "https://raw.githubusercontent.com/justkrismanohar/testA3/master/sb-single.js"
                     ],
-                    "commandToExecute": "bash install.sh"
+                    "commandToExecute": "sudo bash installserver.sh"
                   }
                 }
               }
@@ -326,7 +326,7 @@ RawBlameHistory
                   "timeWindow": "PT5M",
                   "timeAggregation": "Average",
                   "operator": "GreaterThan",
-                  "threshold": 500
+                  "threshold": 50
                 },
                 "scaleAction": {
                   "direction": "Increase",
@@ -345,7 +345,7 @@ RawBlameHistory
                   "timeWindow": "PT5M",
                   "timeAggregation": "Average",
                   "operator": "LessThan",
-                  "threshold": 250
+                  "threshold": 25
                 },
                 "scaleAction": {
                   "direction": "Decrease",
