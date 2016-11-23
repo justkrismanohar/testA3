@@ -16,7 +16,8 @@ sudo pwd
 sudo npm install express 
 sudo npm install azure-sb
 sudo npm install forever -g
-sudo forever start sb-single.js
-sudo forever list
+sudo runuser -l admin806003586 -c 'sudo forever start '$workserver_path'/sb-single.js'
+sudo runuser -l admin806003586 -c 'sudo forever list'
+
 
 
