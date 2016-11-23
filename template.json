@@ -1,21 +1,3 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Gist
- @justkrismanohar
- Unwatch 1
-  Star 0
-  Fork 2,284 justkrismanohar/azure-quickstart-templates
-forked from irwinwilliams/azure-quickstart-templates
- Code  Pull requests 0  Projects 0  Wiki  Pulse  Graphs  Settings
-Branch: master Find file Copy pathazure-quickstart-templates/201-vmss-bottle-autoscale-basedonservicebusqueue/azuredeploy.json
-d6d1a69  2 days ago
-@justkrismanohar justkrismanohar Update azuredeploy.json
-2 contributors @justkrismanohar @irwinwilliams
-RawBlameHistory     
-346 lines (345 sloc)  13.6 KB
 {
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
   "contentVersion": "1.0.0.0",
@@ -361,5 +343,3 @@ RawBlameHistory
     }
   ]
 }
-Contact GitHub API Training Shop Blog About
-© 2016 GitHub, Inc. Terms Privacy Security Status Help

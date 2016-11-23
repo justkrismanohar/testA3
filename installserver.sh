@@ -10,8 +10,9 @@ sudo apt-get -y install nodejs
 sudo ln -s /usr/bin/nodejs /usr/bin/node
 sudo apt-get -y install npm
 
-sudo cd $workserver_path
-sudo echo pwd
+cd $workserver_path
+sudo echo start_node_install
+sudo pwd
 sudo npm install express 
 sudo npm install azure-sb
 sudo npm install forever -g
