@@ -1,5 +1,5 @@
 #!/bin/bash
-workserver_path=/srv/workserver
+workserver_path=/home/workserver
 sudo mkdir $workserver_path
 sudo cp sb-single.js $workserver_path
 sudo cd $workserver_path
