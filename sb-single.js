@@ -1,5 +1,8 @@
 (function(){
 
+	const os = require('os');
+	const hostName = os.hostname();
+	
 	var express = require('express')
 	var app = express()
 	//var azure = require("azure");
@@ -29,13 +32,14 @@
 		});
 	}
 
-	var saveToTable = function(row,data){
+	var saveToTable = function(eType,data){
 		var entGen = azureStorage.TableUtilities.entityGenerator;
 		var date  = (new Date).toISOString();
 		//console.log(entGen.String(date));	
 		var entity = {
-		  PartitionKey: entGen.String(date),
-		  RowKey: entGen.String(row.toString()),
+		  PartitionKey: entGen.String(hostName) ,
+		  RowKey: entGen.String(date),
+		  ErrorType: entGen.String(eType.toString()),
 		  Json:entGen.String(JSON.stringify(data))
 		};
 		
@@ -77,7 +81,7 @@
 						//If falid process
 						//If not valid store failure in azure table. 
 						
-						if(msgId % 3 == 0){
+						if(msgId % 300 == 0){
 							//a simulated failure
 							saveToTable("Message-Failure",lockedMessage);
 						}						
@@ -85,7 +89,7 @@
 						//Delete message from queue
 						serviceBusService.deleteMessage(lockedMessage, function (deleteError){
 							
-							if(msgId % 5 == 0){
+							if(msgId % 500 == 0){
 								//a simulated failure
 								saveToTable("Delete-Failure",lockedMessage);
 							}
@@ -198,7 +202,7 @@
 	})
 
 	app.listen(3000, function () {
-	  console.log('Example app listening on port 3000!');
+	  console.log(hostName+' Example app listening on port 3000!');
 	  setInterval(start,3000);
 	})
 })();
