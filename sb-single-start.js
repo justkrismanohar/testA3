@@ -18,7 +18,7 @@
 	var msgQueueId =0;
 	var serviceBusService = azure.createServiceBusService(connectionString);
 	var qName = 'testqueue2';
-	var running = false;
+	var running = true;
 	var intervalId;
 	var intervalInS = 3000;
 	var maxJobs = 1000;
@@ -244,6 +244,7 @@
 
 	app.listen(3000, function () {
 	  console.log(hostName+' Listening on port 3000!');
+	  intervalId = setInterval(start,intervalInS);
 	})
 	
 })();
