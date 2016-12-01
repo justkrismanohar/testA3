@@ -293,9 +293,9 @@
           {
             "name": "Profile1",
             "capacity": {
-              "minimum": "1",
+              "minimum": "2",
               "maximum": "10",
-              "default": "1"
+              "default": "4"
             },
             "rules": [
               {
@@ -313,7 +313,7 @@
                 "scaleAction": {
                   "direction": "Increase",
                   "type": "ChangeCount",
-                  "value": "1",
+                  "value": "2",
                   "cooldown": "PT1M"
                 }
               },
