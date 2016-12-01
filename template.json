@@ -266,7 +266,7 @@
                   "settings": {
                     "fileUris": [
                       "https://raw.githubusercontent.com/justkrismanohar/testA3/master/installserver.sh",
-                      "https://raw.githubusercontent.com/justkrismanohar/testA3/master/sb-single.js"
+                      "https://raw.githubusercontent.com/justkrismanohar/testA3/master/sb-single-start.js"
                     ],
                     "commandToExecute": "sudo bash installserver.sh > /home/admin806003586/out.log"
                   }
