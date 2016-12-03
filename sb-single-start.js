@@ -8,26 +8,26 @@
 	//var azure = require("azure");
 	var azure = require('azure-sb');
 	var azureStorage = require('azure-storage');
-	var connectionString ="Endpoint=sb://test806003586.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Op1irpLtHBbGyR0sA4nWBQkCtp1xIJiIrpPfiozjusY=";
-	var tableStorageKey ="33MfV7gjfiTBwArgm36pHRi7tik8BUbmUUE1MIEN5sWUgahPLIm5WImfPrcB2aJfdCrJW6h4N+Mlha8oXkcxbg==";
-	var storageAccount ="defaultstorage806003586";
+	var connectionString ="Endpoint=sb://workqueue.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=ORMe/l95XFxGinKH0/5V10snt3Chv/6V5RdBiWlW9tw=";
+	var tableStorageKey ="I6l82t6TEogGLUUmYXFfHR+ChkRgftMh6tQJ0Fd5zzE3LKMIIG8NYLUI5hi58bNJl8LrnGS117UcEaoM09bryA==";
+	var storageAccount ="assignment3806003586";
+	var qName = "q1";
 	var tableService = azureStorage.createTableService(storageAccount,tableStorageKey);
 
 	var msgReceived = 0;
 	var batchNo = 0;
 	var msgQueueId =0;
 	var serviceBusService = azure.createServiceBusService(connectionString);
-	var qName = 'testqueue2';
-	var running = true;
+	
+	var running = false;
 	var intervalId;
 	var intervalInS = 3000;
 	var maxJobs = 1000;
 	
+	var startTime = {}, endTime = {};
 	
 	var getStatus = function(){
-	
-		return {maxJobs: maxJobs, running: running,interval: intervalInS, started: msgQueueId, completed: msgReceived };
-	
+		return {start:startTime, end:endTime, maxJobs: maxJobs, running: running,interval: intervalInS, started: msgQueueId, completed: msgReceived };
 	}
 	var checkMessageCount = function (queueName,sbService){
 		sbService.getQueue(queueName, function(err, queue){
@@ -84,13 +84,14 @@
 		
 			(function(msgId,batchId){
 				serviceBusService.receiveQueueMessage(qName, { isPeekLock: true }, function(error, lockedMessage){
+
 					if(!error){
 						// Message received and locked
 						//console.log(lockedMessage);
 						//Check if valid
 						//If falid process
 						//If not valid store failure in azure table. 
-						
+				
 						if(msgId % 300 == 0){
 							//a simulated failure
 							saveToTable("Message-Failure",lockedMessage);
@@ -116,6 +117,8 @@
 						});
 					}
 					else{
+						
+				
 						//If failed, the message will still be on the queue and some
 						//other consumer will get it
 						
@@ -182,7 +185,7 @@
 			
 			if(running === true && diff <= 200){
 				var serviceBusService = azure.createServiceBusService(connectionString);
-				var qName = 'testqueue2';	
+				//var qName = 'testqueue2';	
 				
 				 serviceBusService.getQueue(qName, function(err, queue){
 					if (err) {
@@ -190,6 +193,7 @@
 					} else {
 						// length of queue (active messages ready to read)
 						var length = queue.CountDetails['d2p1:ActiveMessageCount'];
+						
 						console.log(length + ' messages currently in the queue');
 						runBatch(length);
 						//return length;
@@ -212,11 +216,22 @@
 		res.send(JSON.stringify(getStatus()));
 	})
 	
+	app.get('/test/:size', function (req, res) {
+		startTime = new Date();
+		intervalInS = req.params.intervalSize;
+		msgQueueId = 0;
+		msgReceived = 0;
+		testSize = req.params.size;
+		intervalId = setInterval(start,intervalInS);
+		running = true;		
+		res.send("okay");
+	})
+	
 	app.get('/start/:intervalSize/:max', function (req, res) {
 		if(!running){
 			intervalInS = req.params.intervalSize;
 			maxJobs = req.params.max;
-			
+			startTime = new Date();
 			msgQueueId = 0;
 			msgReceived = 0;
 			intervalId = setInterval(start,intervalInS);
@@ -232,9 +247,12 @@
 			//setInterval(start,3000);
 			clearInterval(intervalId);
 			running = false;
+			endTime = new Date();
 		}
 		res.setHeader('Content-Type', 'application/json');
-		res.send(JSON.stringify(getStatus()));
+		var status = getStatus();
+		status.diffInMS = (endTime - startTime);
+		res.send(JSON.stringify(status));
 	})
 	
 	app.get('/table', function (req, res) {
@@ -245,6 +263,7 @@
 	app.listen(3000, function () {
 	  console.log(hostName+' Listening on port 3000!');
 	  intervalId = setInterval(start,intervalInS);
+	  
 	})
 	
 })();
