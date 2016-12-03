@@ -172,11 +172,11 @@
 				  doWork(max,batchNo);
 			  }
 			  //res.send('started batch '+batchNo + "queued "+msgQueueId +" received " +msgReceived);
-			  console.log('started batch '+batchNo + "queued "+msgQueueId +" received " +msgReceived +" length " + length);
+			  //console.log('started batch '+batchNo + "queued "+msgQueueId +" received " +msgReceived +" length " + length);
 		  }
 		  else{
 			//res.send('load '+ (msgQueueId - msgReceived));
-			console.log('load '+ (msgQueueId - msgReceived) +" length " + length);
+			//console.log('load '+ (msgQueueId - msgReceived) +" length " + length);
 		  }
 	};
 	
@@ -194,7 +194,7 @@
 						// length of queue (active messages ready to read)
 						var length = queue.CountDetails['d2p1:ActiveMessageCount'];
 						
-						console.log(length + ' messages currently in the queue');
+						//console.log(length + ' messages currently in the queue');
 						runBatch(length);
 						//return length;
 					}
