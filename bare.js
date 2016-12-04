@@ -7,9 +7,7 @@
 	})
 	
 	app.listen(80, function () {
-	  console.log(hostName+' Listening on port 3000!');
-	  intervalId = setInterval(start,intervalInS);
-	  
+	  console.log(hostName+' Listening on port 3000!'); 
 	})
 	
 })();
