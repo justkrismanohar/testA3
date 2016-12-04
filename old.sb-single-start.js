@@ -26,18 +26,22 @@
 	
 	var startTime = {}, endTime = {};
 	
-	
-	app.use(function(req, res, next) {
-			res.header("Access-Control-Allow-Origin", "*");
-			res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-			next();
-		});
-
-		
 	var getStatus = function(){
 		return {start:startTime, end:endTime, maxJobs: maxJobs, running: running,interval: intervalInS, started: msgQueueId, completed: msgReceived };
 	}
-	
+	var checkMessageCount = function (queueName,sbService){
+		sbService.getQueue(queueName, function(err, queue){
+			if (err) {
+				console.log('Error on get queue length: ', err);
+			} else {
+				// length of queue (active messages ready to read)
+				var length = queue.CountDetails['d2p1:ActiveMessageCount'];
+				console.log(length + ' messages currently in the queue');
+				return length;
+			}
+		});
+	}
+
 	var saveToTable = function(eType,data){
 		var entGen = azureStorage.TableUtilities.entityGenerator;
 		var date  = (new Date).toISOString();
@@ -69,38 +73,61 @@
 		};
 		
 		trySave(data);
+		//console.log("END CALL 1");
+		//trySave(data);
 	};
 	
 	var doWork = function(batchSize,batchNo){
 		var i; 
-		//node does this in async
+		//node does this async
 		for(i=0; i < batchSize; i++){	  
 		
 			(function(msgId,batchId){
 				serviceBusService.receiveQueueMessage(qName, { isPeekLock: true }, function(error, lockedMessage){
 
 					if(!error){
+						// Message received and locked
+						//console.log(lockedMessage);
+						//Check if valid
+						//If falid process
+						//If not valid store failure in azure table. 
 						
-						//Check for flag to simulate failure
 						if(lockedMessage.ProductName === "Error"){
 							saveToTable("Message-Failure",lockedMessage);
 						}
 						
+						//if(msgId % 300 == 0){
+							//a simulated failure
+						//	saveToTable("Message-Failure",lockedMessage);
+						//}						
+						
 						//Delete message from queue
 						serviceBusService.deleteMessage(lockedMessage, function (deleteError){
 							
+							//if(msgId % 500 == 0){
+								//a simulated failure
+							//	saveToTable("Delete-Failure",lockedMessage);
+							//}
+							
 							if(!deleteError){
+								// Message deleted
+								//msgReceived++;
+								//console.log("+batch "+batchId+" msg "+msgId);
 							}
 							else{
 								//console.log("delete error batch "+batchId+" msg "+msgId);
+								//msgReceived++;
 							}
 						});
 					}
 					else{
+						
+				
 						//If failed, the message will still be on the queue and some
 						//other consumer will get it
 						
 						//console.log("-batch "+batchId+" msg "+msgId);
+						//msgReceived++;
 					}
 					
 					msgReceived++;
@@ -110,8 +137,33 @@
 		}
 	};
 
+	/*
+	app.get('/count', function (req, res) {
+		var serviceBusService = azure.createServiceBusService(connectionString);
+		var qName = 'testqueue2';
+
+		 serviceBusService.getQueue(qName, function(err, queue){
+			if (err) {
+				console.log('Error on get queue length: ', err);
+			} else {
+				// length of queue (active messages ready to read)
+				var length = queue.CountDetails['d2p1:ActiveMessageCount'];
+				res.send('started batch '+batchNo + "queued "+msgQueueId +" received " +msgReceived +" length " + length);
+				//return length;
+			}
+		});
+		
+	   //res.send('started batch '+batchNo + "queued "+msgQueueId +" received " +msgReceived);
+	})
+	*/
+
+
+
+	//app.get('/', function (req, res) {
+
 	var runBatch = function(length){
 		  //console.log("queued "+msgQueueId +" received " +msgReceived);
+		  
 		  if(length > 0){
 			  var diff = msgQueueId - msgReceived ;
 			  var max = maxJobs - diff;
@@ -123,9 +175,11 @@
 			  else{
 				  doWork(max,batchNo);
 			  }
+			  //res.send('started batch '+batchNo + "queued "+msgQueueId +" received " +msgReceived);
 			  //console.log('started batch '+batchNo + "queued "+msgQueueId +" received " +msgReceived +" length " + length);
 		  }
 		  else{
+			//res.send('load '+ (msgQueueId - msgReceived));
 			//console.log('load '+ (msgQueueId - msgReceived) +" length " + length);
 		  }
 	};
@@ -135,6 +189,7 @@
 			
 			if(running === true && diff <= 200){
 				var serviceBusService = azure.createServiceBusService(connectionString);
+				//var qName = 'testqueue2';	
 				
 				 serviceBusService.getQueue(qName, function(err, queue){
 					if (err) {
@@ -145,11 +200,20 @@
 						
 						//console.log(length + ' messages currently in the queue');
 						runBatch(length);
+						//return length;
 					}
 				});
 			}
 			  
 		 }; 
+
+	 //setInterval(start,3000);
+	 //res.send("Started");
+	 
+	//})
+	//console.log("Starting consumer");
+
+	//setInterval(start,3000);
 
 	app.get('/count', function (req, res) {
 		res.setHeader('Content-Type', 'application/json');
@@ -167,10 +231,10 @@
 		res.send("okay");
 	})
 	
-	app.get('/start', function (req, res) {
+	app.get('/start/:intervalSize/:max', function (req, res) {
 		if(!running){
-			intervalInS = 50;
-			maxJobs = 500;
+			intervalInS = req.params.intervalSize;
+			maxJobs = req.params.max;
 			startTime = new Date();
 			msgQueueId = 0;
 			msgReceived = 0;
@@ -199,8 +263,8 @@
 		saveToTable("test","Hello World!");
 		res.send("okay");
 	})
-	
-	app.listen(80, function () {
+
+	app.listen(3000, function () {
 	  console.log(hostName+' Listening on port 3000!');
 	  intervalId = setInterval(start,intervalInS);
 	  
