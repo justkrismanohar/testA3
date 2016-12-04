@@ -61,9 +61,9 @@
 				count++;
 				console.log("Table-Storage-error-Retry "+count+" of 10");
 				console.log(error);
-				if(count < 10){
-					trySave(data);
-				}
+				//if(count < 10){
+				//	trySave(data);
+				//}
 			  }
 			});
 		};
@@ -82,8 +82,11 @@
 					if(!error){
 						
 						//Check for flag to simulate failure
-						if(lockedMessage.ProductName === "Error"){
+						if(lockedMessage.ProductName && lockedMessage.ProductName === "Error"){
 							saveToTable("Message-Failure",lockedMessage);
+						}
+						else{
+							saveToTable("Message-Success",lockedMessage);
 						}
 						
 						//Delete message from queue
@@ -141,10 +144,11 @@
 						console.log('Error on get queue length: ', err);
 					} else {
 						// length of queue (active messages ready to read)
-						var length = queue.CountDetails['d2p1:ActiveMessageCount'];
+						//var length = queue.CountDetails['d2p1:ActiveMessageCount'];
 						
 						//console.log(length + ' messages currently in the queue');
-						runBatch(length);
+						//runBatch(length);
+						runBatch(300);
 					}
 				});
 			}
@@ -154,6 +158,10 @@
 	app.get('/count', function (req, res) {
 		res.setHeader('Content-Type', 'application/json');
 		res.send(JSON.stringify(getStatus()));
+	})
+	
+	app.get('/bare', function (req, res) {
+		res.sendStatus(200);
 	})
 	
 	app.get('/test/:size', function (req, res) {
@@ -200,7 +208,7 @@
 		res.send("okay");
 	})
 	
-	app.listen(80, function () {
+	app.listen(3000, function () {
 	  console.log(hostName+' Listening on port 3000!');
 	  intervalId = setInterval(start,intervalInS);
 	  
