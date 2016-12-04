@@ -69,6 +69,7 @@
 		};
 		
 		trySave(data);
+		
 	};
 	
 	var doWork = function(batchSize,batchNo){
