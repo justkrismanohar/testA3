@@ -23,7 +23,7 @@
 	var msgQueueId =0;
 	var serviceBusService = azure.createServiceBusService(connectionString);
 	
-	var running = false;
+	var running = true;
 	var intervalId;
 	var intervalInS = 3000;
 	var maxJobs = 1000;
