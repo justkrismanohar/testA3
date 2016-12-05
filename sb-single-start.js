@@ -8,8 +8,12 @@
 	//var azure = require("azure");
 	var azure = require('azure-sb');
 	var azureStorage = require('azure-storage');
+	
+	/*var connectionString ="Endpoint=sb://pworkqueue.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=QTZ8jLmgPYGTzwavvMyGSRALQZlj4+z7kgf8BadWUD8=";
+	*/
 	var connectionString ="Endpoint=sb://workqueue.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=ORMe/l95XFxGinKH0/5V10snt3Chv/6V5RdBiWlW9tw=";
-	var tableStorageKey ="I6l82t6TEogGLUUmYXFfHR+ChkRgftMh6tQJ0Fd5zzE3LKMIIG8NYLUI5hi58bNJl8LrnGS117UcEaoM09bryA==";
+
+	var tableStorageKey ="iUpb4dZIo8IPna2XoX7WhtHREBk8GA1qa3XHqcXZNcoGFTIorExOcSRD0+cdy324C+JkTgdV2zvoIQU7yOmByw==";
 	var storageAccount ="assignment3806003586";
 	var qName = "q1";
 	var tableService = azureStorage.createTableService(storageAccount,tableStorageKey);
@@ -23,6 +27,7 @@
 	var intervalId;
 	var intervalInS = 3000;
 	var maxJobs = 1000;
+	var port = 80;
 	
 	var startTime = {}, endTime = {};
 	
@@ -209,8 +214,8 @@
 		res.send("okay");
 	})
 	
-	app.listen(3000, function () {
-	  console.log(hostName+' Listening on port 3000!');
+	app.listen(port, function () {
+	  console.log(hostName+' Listening on port '+port+'!');
 	  intervalId = setInterval(start,intervalInS);
 	  
 	})
