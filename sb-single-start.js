@@ -27,7 +27,7 @@
 	var intervalId;
 	var intervalInS = 3000;
 	var maxJobs = 1000;
-	var port = 80;
+	var port = 3000;
 	
 	var startTime = {}, endTime = {};
 	
@@ -87,9 +87,13 @@
 
 					if(!error){
 						
+						
+						var data = JSON.parse(lockedMessage.body);
+						console.log(data.ProductName);
 						//Check for flag to simulate failure
-						if(lockedMessage.ProductName && lockedMessage.ProductName === "Error"){
+						if(data.ProductName && lockedMessage.ProductName === "Error"){
 							saveToTable("Message-Failure",lockedMessage);
+							
 						}
 						else{
 							saveToTable("Message-Success",lockedMessage);
